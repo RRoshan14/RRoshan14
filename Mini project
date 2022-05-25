@@ -1,0 +1,40 @@
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
+#define ONE_WIRE_BUS 2
+OneWire oneWire(ONE_WIRE_BUS);
+LiquidCrystal_I2C lcd(0x27,20,4);
+DallasTemperature sensors(&oneWire);
+void setup() 
+{
+  // put your setup code here, to run once:
+float ptemp,atemp;
+DeviceAddress insideThermometer;
+sensors.requestTemperatures();
+lcd.init();
+lcd.backlight();
+sensors.begin();
+Serial.begin(9600);
+sensors.requestTemperatures(); 
+lcd.setCursor(2,0);
+ptemp=sensors.getTempCByIndex(0);
+lcd.print("Temp:");
+lcd.print(ptemp);
+lcd.print((char)223);
+lcd.print("C");
+delay(20000);
+sensors.requestTemperatures();
+lcd.setCursor(2,0);
+atemp=sensors.getTempCByIndex(0);
+lcd.print("Temp:");
+lcd.print(atemp);
+lcd.print((char)223);
+lcd.print("C");
+lcd.setCursor(2,1);
+lcd.print("COND:");
+if((ptemp+10)<atemp)
+ lcd.print("GOOD");
+else
+ lcd.print("BAD !");
+}

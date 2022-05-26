@@ -37,4 +37,5 @@ if((ptemp+10)<atemp)
  lcd.print("GOOD");
 else
  lcd.print("BAD !");
+
 }
